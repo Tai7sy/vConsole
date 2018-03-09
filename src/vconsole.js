@@ -13,6 +13,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
  * A Front-End Console Panel for Mobile Webpage
  */
 
+import 'babel-polyfill'
+
 // global
 import './lib/symbol.js';
 
@@ -22,4 +24,5 @@ import VConsolePlugin from './lib/plugin.js';
 
 // export
 VConsole.VConsolePlugin = VConsolePlugin;
+window.VConsole = VConsole;
 export default VConsole;

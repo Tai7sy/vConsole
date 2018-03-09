@@ -1,6 +1,6 @@
 var pkg = require('./package.json');
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var path = require('path')
 
 module.exports = {
   devtool: false,
@@ -8,27 +8,25 @@ module.exports = {
     vconsole : './src/vconsole.js'
   },
   output: {
-    path: './dist',
-    filename: '[name].min.js',
-    library: 'VConsole',
-    libraryTarget: 'umd',
-    umdNameDefine: true
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].min.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.html$/, loader: 'html?minimize=false'
+        test: /\.html$/, loader: 'html-loader?minimize=false'
       },
-      { 
-        test: /\.js$/, loader: 'babel'
+      {
+        test: /\.js$/, loader: 'babel-loader',
+        include: [path.join(__dirname, './src')]
       },
       {
         test: /\.less$/,
-        loader: 'style!css!less'
+        loader: 'style-loader!css-loader!less-loader'
         // loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader') // 将css独立打包
       },
       {
-        test: /\.json$/, loader: 'json'
+        test: /\.json$/, loader: 'json-loader'
       }
     ]
   },
@@ -41,8 +39,8 @@ module.exports = {
         'Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at',
         'http://opensource.org/licenses/MIT',
         'Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.'
-    ].join('\n'))
-    ,new webpack.optimize.UglifyJsPlugin({
+    ].join('\n')),
+    new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       }
